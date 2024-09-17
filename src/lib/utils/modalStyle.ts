@@ -22,3 +22,14 @@ export const modalStyle = {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
   },
 };
+
+export const modalDialogStyle = {
+  ...modalStyle,
+  content: {
+    ...modalStyle.content,
+    top: 'auto',
+    left: 'auto',
+    padding: 'auto',
+    backgroundColor: 'transparent',
+  },
+};

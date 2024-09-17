@@ -20,7 +20,26 @@ export const puppeteerConfig = {
   ],
 };
 
-export const pageSetup = async (page) => {
+export const confirmDialog = async (page: Page) => {
+  // Works fine locally, but for some reasong fails
+  // when runs on gtihub actions
+  // const confirmDialog = await expect(page).toMatchElement(
+  //   '[aria-label="Confirm Modal"]',
+  // );
+  // await expect(confirmDialog).toClick(
+  //   '[aria-label="Confirm"]',
+  // );
+
+  await page.waitForSelector(
+    '[aria-label="Confirm Modal"]',
+    { visible: true },
+  );
+
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Enter');
+};
+
+export const pageSetup = async (page: Page) => {
   await page.setViewport({ width: 1366, height: 768 });
   await page.setUserAgent('UA-TEST');
   await page.goto(

@@ -1,52 +1,52 @@
 import React, { FC, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import partition from 'lodash/partition';
 import { Store } from '../../../lib/store';
 import {
-  Story,
   GenericStory,
   BaseEventHandler,
+  DataStory,
 } from '../../../lib/types';
 import { BaseStoryWidgetModal } from '../BaseStoryModal';
 import { SaveStoryI } from '../BaseStoryModal/SaveStoryI';
+import { editStory, saveStory } from '../../../lib/utils';
 
 interface Props {
   store: Store;
   defaultStory: GenericStory;
   handleCancel: BaseEventHandler;
+  saveDiagram?: boolean;
 }
 
 export const StoryWidgetModal: FC<Props> = observer(
-  ({ store, defaultStory, handleCancel }) => {
-    const isThisEditedStory = (story: Story) => {
-      return story.name === defaultStory.name;
-    };
-
-    const handleStoryEdit = (story: SaveStoryI) => {
-      const [omitedStories, stories] = partition(
-        store.metadata.stories,
-        isThisEditedStory,
+  ({
+    store,
+    defaultStory,
+    handleCancel,
+    saveDiagram = false,
+  }) => {
+    const handleStoryEdit = async (story: SaveStoryI) => {
+      const dataStory = new DataStory(
+        story.name,
+        story.description,
+        Object.values(story.tags),
+        store.getModel().serialize(),
       );
 
-      const omitedStory = omitedStories[0];
-      const updatedStory = {
-        ...omitedStory,
-        name: story.name,
-        description: story.description,
-        tags: Object.values(story.tags),
-      };
+      const storyBeingEdited =
+        defaultStory.name === story.name;
 
-      store.setStories([...stories, updatedStory]);
+      storyBeingEdited
+        ? await editStory(store, dataStory, {
+            noDiagramSaving: !saveDiagram,
+          })
+        : await saveStory(store, {
+            ...dataStory,
+            diagram: store.metadata.stories.find(
+              (story) => story.name === defaultStory.name,
+            ).diagram,
+          });
 
-      localStorage.removeItem(defaultStory.name);
-      store.metadata.client
-        .save(updatedStory)
-        .then(() => {
-          handleCancel(1);
-        })
-        .catch((err) => {
-          alert('Save error');
-        });
+      handleCancel(1);
     };
 
     return (
@@ -55,6 +55,7 @@ export const StoryWidgetModal: FC<Props> = observer(
           defaultStory={defaultStory}
           storySaver={handleStoryEdit}
           handleCancel={handleCancel}
+          store={store}
         />
       </div>
     );

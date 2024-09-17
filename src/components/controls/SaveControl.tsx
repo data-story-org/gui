@@ -17,7 +17,9 @@ export const SaveControl: FC<Props> = observer(
     const [title, icon] = ['Save story', 'fas fa-save'];
     const [isOpen, setIsOpen] = useState(false);
 
-    useHotkeys('shift+s', () => {
+    useHotkeys('shift+s', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       onClick();
     });
 

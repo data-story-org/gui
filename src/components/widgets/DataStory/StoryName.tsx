@@ -4,7 +4,7 @@ interface Props {
   storyName: string;
 }
 
-const nameStyle = 'text-black font-bold text-xl w-9/12';
+const nameStyle = 'text-black font-bold text-xl w-8/12';
 
 export const DataStoryWidgetName: FC<Props> = ({
   storyName,

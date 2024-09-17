@@ -12,9 +12,9 @@ export const DataStoryWidgetTags: FC<Props> = ({
 }) => {
   return (
     <>
-      {storyTags.map((tag: string) => {
+      {storyTags.map((tag: string, i) => {
         return tag ? (
-          <span key={tag} className={tagStyle}>
+          <span key={`${tag}-${i}`} className={tagStyle}>
             {tag}
           </span>
         ) : null;

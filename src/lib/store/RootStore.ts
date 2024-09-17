@@ -20,6 +20,7 @@ interface Metadata {
   activeStory: string;
   client: Client;
   demos: Story[];
+  confirmationRequired: boolean;
 }
 
 interface Diagram {
@@ -51,6 +52,7 @@ export class Store {
     activeStory: 'Untitled',
     client: ClientFactory((window as any).config),
     demos: [],
+    confirmationRequired: false,
   };
 
   constructor() {
@@ -81,6 +83,7 @@ export class Store {
       setRunning: action.bound,
       setStories: action.bound,
       setDiagramLocked: action.bound,
+      setConfirmRequired: action.bound,
 
       // Getters
       getModel: action.bound,
@@ -96,7 +99,7 @@ export class Store {
   }
 
   addNode(data) {
-		delete data.id; // TODO remove id at availableNodes prep
+    delete data.id; // TODO remove id at availableNodes prep
 
     this.getModel().addNode(
       new NodeModel({
@@ -171,10 +174,7 @@ export class Store {
 
   setPage(name) {
     const alreadyOnPage = this.metadata.page == name;
-    this.metadata.page =
-      alreadyOnPage
-        ? 'Workbench'
-        : name;
+    this.metadata.page = alreadyOnPage ? 'Workbench' : name;
   }
 
   setResults(results) {
@@ -285,6 +285,10 @@ export class Store {
       //@ts-ignore
       state.dragCanvas.config.allowDrag = !locked;
     }
+  }
+
+  setConfirmRequired(required: boolean) {
+    this.metadata.confirmationRequired = required;
   }
 
   getModel(): DiagramModel {

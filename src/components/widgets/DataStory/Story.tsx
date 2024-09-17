@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Store } from '../../../lib/store';
 import { GenericStory } from '../../../lib/types';
@@ -20,14 +20,17 @@ interface Props {
 const storyWidgetStyle =
   'cursor-pointer rounded bg-gray-400 hover:shadow-xl overflow-hidden shadow-lg';
 
-export const DataStoryWidget: FC<Props> = observer(
-  ({
-    store,
-    story,
-    storyLoadHandler,
-    isStoryDemo = false,
-  }) => {
+export const DataStoryWidget = observer<
+  Props,
+  HTMLDivElement
+>(
+  (
+    { store, story, storyLoadHandler, isStoryDemo = false },
+    ref,
+  ) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [doDiagramSaving, setDoDiagramSaving] =
+      useState(false);
 
     const openModal = () => {
       store.setDiagramLocked(true);
@@ -39,10 +42,16 @@ export const DataStoryWidget: FC<Props> = observer(
       setIsOpen(false);
     };
 
+    const handleModalSave = () => {
+      setDoDiagramSaving(true);
+      openModal();
+    };
+
     return (
       <div
         key={story.name}
         id="data-story"
+        ref={ref}
         className={storyWidgetStyle}
         onClick={
           isOpen
@@ -54,6 +63,7 @@ export const DataStoryWidget: FC<Props> = observer(
           {!isStoryDemo && (
             <DataStoryWidgetActions
               onEdit={openModal}
+              onSave={handleModalSave}
               store={store}
               story={story}
             />
@@ -78,9 +88,11 @@ export const DataStoryWidget: FC<Props> = observer(
             store={store}
             defaultStory={story}
             handleCancel={closeModal}
+            saveDiagram={doDiagramSaving}
           />
         </Modal>
       </div>
     );
   },
+  { forwardRef: true },
 );

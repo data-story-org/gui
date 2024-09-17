@@ -2,6 +2,7 @@ import 'expect-puppeteer';
 import { setDefaultOptions } from 'expect-puppeteer';
 import puppeteer, { Page, Browser } from 'puppeteer';
 import {
+  confirmDialog,
   generateRandomString,
   openModal,
   pageSetup,
@@ -32,10 +33,11 @@ describe('Stories deleting', () => {
   };
 
   const testOnStoryDeletion = async () => {
-    page.on('dialog', (dialog) => {
-      dialog.accept();
-    });
+    // page.on('dialog', (dialog) => {
+    //   dialog.accept();
+    // });
     await expect(page).toClick('i.fa-minus');
+    await confirmDialog(page);
 
     await expect(page).not.toMatch(storyName);
   };

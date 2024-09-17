@@ -78,17 +78,15 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "typescript": "^4.2.2",
-    "tailwindcss": "^2.2.15",
-    "@fontsource/ibm-plex-mono": "^4.5.1",
-    "@fontsource/ibm-plex-sans": "^4.5.1",
-    "@fontsource/ibm-plex-serif": "^4.5.0",
-    "@fortawesome/fontawesome-free": "^5.15.4",
     "@babel/plugin-proposal-decorators": "^7.12.1",
     "@babel/plugin-transform-modules-commonjs": "^7.13.8",
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@babel/preset-react": "^7.0.0",
+    "@fontsource/ibm-plex-mono": "^4.5.1",
+    "@fontsource/ibm-plex-sans": "^4.5.1",
+    "@fontsource/ibm-plex-serif": "^4.5.0",
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "@testing-library/dom": "^8.7.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.1",
@@ -96,6 +94,7 @@
     "@types/expect-puppeteer": "^4.4.6",
     "@types/jest": "^27.0.1",
     "@types/jest-environment-puppeteer": "^4.4.1",
+    "@types/lodash": "^4.14.177",
     "@types/node": "^16.6.1",
     "@types/puppeteer": "^5.4.4",
     "@types/react": "^17.0.17",
@@ -122,8 +121,10 @@
     "resolve-url-loader": "^4.0.0",
     "sass": "^1.38.1",
     "sass-loader": "^12.1.0",
+    "tailwindcss": "^2.2.15",
     "ts-jest": "^27.0.4",
-    "ts-loader": "^9.2.5"
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.2.2"
   },
   "prettier": {
     "printWidth": 60,
